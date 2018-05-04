@@ -1,6 +1,8 @@
 import * as webpack from "webpack";
 import * as path from "path";
 import getBabelConfig from "./babel.config";
+import * as CleanWebpackPlugin from "clean-webpack-plugin";
+import * as HtmlWebpackPlugin from "html-webpack-plugin";
 
 export default function() {
   let modules = false;
@@ -34,6 +36,7 @@ export default function() {
   // }
 
   let config: webpack.Configuration = {
+    mode: "development",
     entry: {
       [`${pkg.name}.min`]: "./src/index"
     },
@@ -70,11 +73,36 @@ export default function() {
             { loader: "ts-loader", options: { transpileOnly: true } }
           ]
         },
-        // {
-        //   test: /\.css$/,
-
-        // }
+        {
+          test: /\.less$/,
+          use: [
+            { loader: "style-loader" },
+            {
+              loader: "css-loader",
+              options: {
+                modules: true,
+                sourceMap: true,
+              }
+            },
+            {
+              loader: "less-loader"
+            }
+          ]
+        }
       ]
+    },
+    plugins: [
+      new CleanWebpackPlugin(["dist"]),
+      // new UglifyjsWebpackPlugin({sourceMap: true}),
+      new HtmlWebpackPlugin({
+        title: "learn Webpack",
+        template: "./public/index.html"
+      })
+    ],
+    devServer: {
+      port: 9000,
+      open: true,
+      publicPath: "/"
     }
   };
   return config;

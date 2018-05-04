@@ -3,7 +3,7 @@
     "strictNullChecks": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
-    "jsx": "preserve",
+    "jsx": "react",
     // "noUnusedParameters": true,
     // "noUnusedLocals": true,
     "noImplicitAny": true,
@@ -13,3 +13,6 @@
   },
   "exclude": ["node_modules", "lib", "es"]
 }
+
+
+

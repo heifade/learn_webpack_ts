@@ -3,6 +3,7 @@ import * as path from "path";
 import getBabelConfig from "./babel.config";
 import * as CleanWebpackPlugin from "clean-webpack-plugin";
 import * as HtmlWebpackPlugin from "html-webpack-plugin";
+import chalk from "chalk";
 
 export default function() {
   let modules = false;
@@ -97,6 +98,14 @@ export default function() {
       new HtmlWebpackPlugin({
         title: "learn Webpack",
         template: "./public/index.html"
+      }),
+      new webpack.ProgressPlugin((percentage, msg, addInfo) => {
+        const stream = process.stdout;
+        if (stream.isTTY && percentage < 0.71) {
+          stream.write(`${chalk.magenta(msg)} (${chalk.magenta(addInfo || '')})\n`);
+        } else if (percentage === 1) {
+          console.log(chalk.green('\nwebpack: bundle build is now finished.'));
+        }
       })
     ],
     devServer: {

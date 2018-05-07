@@ -11,6 +11,8 @@ export default function() {
 
   let babelConfig = getBabelConfig(modules || false);
 
+  console.log(`NODE_ENV1=${process.env.NODE_ENV1}, NODE_ENV2=${process.env.NODE_ENV2}`);
+
   // const pluginImportOptions = [
   //   {
   //     style: true,

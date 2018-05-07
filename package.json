@@ -1,10 +1,10 @@
 {
   "name": "learn_webpack",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
+    "build": "cross-env NODE_ENV1=pro1 NODE_ENV2=pro2  webpack",
     "start": "webpack-dev-server"
   },
   "keywords": [],
@@ -27,6 +27,7 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "clean-webpack-plugin": "^0.1.19",
+    "cross-env": "^5.1.4",
     "css-loader": "^0.28.11",
     "html-webpack-plugin": "^3.2.0",
     "less": "^3.0.2",

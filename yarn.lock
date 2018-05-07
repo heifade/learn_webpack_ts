@@ -38,6 +38,10 @@
     "@types/html-minifier" "*"
     "@types/webpack" "*"
 
+"@types/lodash@^4.14.108":
+  version "4.14.108"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.108.tgz#02656af3add2e5b3174f830862c47421c00ef817"
+
 "@types/node@*":
   version "10.0.3"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.0.3.tgz#1f89840c7aac2406cc43a2ecad98fc02a8e130e4"
@@ -3572,6 +3576,10 @@ isurl@^1.0.0-alpha5:
   dependencies:
     has-to-string-tag-x "^1.2.0"
     is-object "^1.0.1"
+
+jQuery@^1.7.4:
+  version "1.7.4"
+  resolved "https://registry.yarnpkg.com/jQuery/-/jQuery-1.7.4.tgz#f32dc5c85a7044ee864b4443b9ee45f9478ba137"
 
 js-base64@^2.1.9:
   version "2.4.3"

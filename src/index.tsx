@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { trim } from "lodash";
 let styles = require("./index.less");
 
 
@@ -16,3 +17,8 @@ ReactDOM.render(
 
   div
 );
+
+
+console.log(trim('  5566  '));
+
+console.log(process.env.ENV);

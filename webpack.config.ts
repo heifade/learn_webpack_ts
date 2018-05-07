@@ -43,7 +43,8 @@ export default function() {
     },
     output: {
       path: path.resolve(__dirname, "dist"),
-      filename: "[name].js"
+      filename: "[name].js",
+      // library: pkg.name
     },
     devtool: "source-map",
     resolve: {
@@ -58,6 +59,9 @@ export default function() {
       (last, curr) => Object.assign({}, last, { [curr]: "empty" }),
       {}
     ),
+    externals: {
+      
+    },
     module: {
       noParse: [/moment.js/],
       rules: [
@@ -106,6 +110,10 @@ export default function() {
         } else if (percentage === 1) {
           console.log(chalk.green('\nwebpack: bundle build is now finished.'));
         }
+      }),
+      // new webpack.optimize.ModuleConcatenationPlugin(),
+      new webpack.DefinePlugin({
+        "process.env.ENV": JSON.stringify("Hellow")
       })
     ],
     devServer: {

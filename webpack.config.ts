@@ -5,6 +5,7 @@ import * as CleanWebpackPlugin from "clean-webpack-plugin";
 import * as HtmlWebpackPlugin from "html-webpack-plugin";
 import chalk from "chalk";
 import * as UglifyjsWebpackPlugin from "uglifyjs-webpack-plugin";
+import * as MiniCssExtractPlugin from "mini-css-extract-plugin";
 
 export default function() {
   let modules = false;
@@ -16,39 +17,16 @@ export default function() {
     `NODE_ENV1=${process.env.NODE_ENV1}, NODE_ENV2=${process.env.NODE_ENV2}`
   );
 
-  // const pluginImportOptions = [
-  //   {
-  //     style: true,
-  //     libraryName: pkg.name,
-  //     libraryDirectory: "components"
-  //   }
-  // ];
-
-  // if (pkg.name !== 'antd') {
-  //   pluginImportOptions.push({
-  //     style: 'css',
-  //     libraryDirectory: 'es',
-  //     libraryName: 'antd',
-  //   });
-  // }
-
-  // babelConfig.plugins.push([
-  //   require.resolve("babel-plugin-import"),
-  //   pluginImportOptions
-  // ]);
-
-  // if (!modules) {
-  //   babelConfig.plugins.push(replaceLib);
-  // }
-
   let config: webpack.Configuration = {
     mode: "development",
     entry: {
-      [`${pkg.name}.min`]: "./src/index"
+      //[`${pkg.name}.min`]: "./src/index"
+      index: "./src/index"
     },
     output: {
       path: path.resolve(__dirname, "dist"),
       filename: "[name].js"
+      // publicPath: path.resolve(__dirname, "dist", "assets"),
     },
     devtool: "source-map",
     resolve: {
@@ -73,6 +51,21 @@ export default function() {
       noParse: [/moment.js/],
       rules: [
         {
+          test: /\.(woff|woff2|eot|ttf|otf|png|gif|jpe?g)$/,
+          exclude: /node_modules/,
+          use: [
+            {
+              loader: "url-loader",
+              options: {
+                name: "[name].[ext]",
+                outputPath: "images/",
+                // publicPath: "../",
+                limit: 128
+              }
+            }
+          ]
+        },
+        {
           test: /\.jsx?$/,
           exclude: /node_modules/,
           loader: "babel-loader",
@@ -87,18 +80,14 @@ export default function() {
         },
         {
           test: /\.less$/,
+          exclude: /node_modules/,
           use: [
-            { loader: "style-loader" },
+            MiniCssExtractPlugin.loader,
             {
               loader: "css-loader",
-              options: {
-                modules: true,
-                sourceMap: true
-              }
+              options: { modules: true }
             },
-            {
-              loader: "less-loader"
-            }
+            { loader: "less-loader", options: { javascriptEnabled: true } }
           ]
         }
       ]
@@ -149,6 +138,10 @@ export default function() {
 
       new webpack.DefinePlugin({
         "process.env.ENV": JSON.stringify("Hellow")
+      }),
+      new MiniCssExtractPlugin({
+        filename: "[name].css",
+        chunkFilename: "[id].css"
       })
     ],
     devServer: {

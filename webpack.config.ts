@@ -4,6 +4,7 @@ import getBabelConfig from "./babel.config";
 import * as CleanWebpackPlugin from "clean-webpack-plugin";
 import * as HtmlWebpackPlugin from "html-webpack-plugin";
 import chalk from "chalk";
+import * as UglifyjsWebpackPlugin from "uglifyjs-webpack-plugin";
 
 export default function() {
   let modules = false;
@@ -11,7 +12,9 @@ export default function() {
 
   let babelConfig = getBabelConfig(modules || false);
 
-  console.log(`NODE_ENV1=${process.env.NODE_ENV1}, NODE_ENV2=${process.env.NODE_ENV2}`);
+  console.log(
+    `NODE_ENV1=${process.env.NODE_ENV1}, NODE_ENV2=${process.env.NODE_ENV2}`
+  );
 
   // const pluginImportOptions = [
   //   {
@@ -45,8 +48,7 @@ export default function() {
     },
     output: {
       path: path.resolve(__dirname, "dist"),
-      filename: "[name].js",
-      // library: pkg.name
+      filename: "[name].js"
     },
     devtool: "source-map",
     resolve: {
@@ -61,9 +63,12 @@ export default function() {
       (last, curr) => Object.assign({}, last, { [curr]: "empty" }),
       {}
     ),
-    externals: {
-      
-    },
+    // externals: {
+    //   moment: "moment",
+    //   react: "react",
+    //   "react-dom": "react-dom",
+    //   lodash: "lodash"
+    // },
     module: {
       noParse: [/moment.js/],
       rules: [
@@ -88,7 +93,7 @@ export default function() {
               loader: "css-loader",
               options: {
                 modules: true,
-                sourceMap: true,
+                sourceMap: true
               }
             },
             {
@@ -98,22 +103,50 @@ export default function() {
         }
       ]
     },
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          commons: {
+            chunks: "initial",
+            minChunks: 2,
+            maxInitialRequests: 5,
+            minSize: 0
+          },
+          vendor: {
+            test: /node_modules/,
+            chunks: "initial",
+            name: "vendor",
+            priority: 10,
+            enforce: true
+          }
+        }
+      },
+      runtimeChunk: false
+    },
     plugins: [
       new CleanWebpackPlugin(["dist"]),
-      // new UglifyjsWebpackPlugin({sourceMap: true}),
+      new UglifyjsWebpackPlugin({
+        parallel: true,
+        uglifyOptions: {
+          ecma: 6
+        }
+      }),
       new HtmlWebpackPlugin({
         title: "learn Webpack",
         template: "./public/index.html"
       }),
-      new webpack.ProgressPlugin((percentage, msg, addInfo) => {
-        const stream = process.stdout;
-        if (stream.isTTY && percentage < 0.71) {
-          stream.write(`${chalk.magenta(msg)} (${chalk.magenta(addInfo || '')})\n`);
-        } else if (percentage === 1) {
-          console.log(chalk.green('\nwebpack: bundle build is now finished.'));
-        }
-      }),
+      // new webpack.ProgressPlugin((percentage, msg, addInfo) => {
+      //   const stream = process.stdout;
+      //   if (stream.isTTY && percentage < 0.71) {
+      //     stream.write(
+      //       `${chalk.magenta(msg)} (${chalk.magenta(addInfo || "")})\n`
+      //     );
+      //   } else if (percentage === 1) {
+      //     console.log(chalk.green("\nwebpack: bundle build is now finished."));
+      //   }
+      // }),
       // new webpack.optimize.ModuleConcatenationPlugin(),
+
       new webpack.DefinePlugin({
         "process.env.ENV": JSON.stringify("Hellow")
       })

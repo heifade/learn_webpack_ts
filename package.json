@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "cross-env NODE_ENV1=pro1 NODE_ENV2=pro2  webpack",
+    "build": "cross-env NODE_ENV1=pro1 NODE_ENV2=pro2 webpack --progress --verbose",
     "start": "webpack-dev-server"
   },
   "keywords": [],
@@ -16,6 +16,7 @@
     "@types/lodash": "^4.14.108",
     "@types/react": "^16.3.13",
     "@types/react-dom": "^16.0.5",
+    "@types/uglifyjs-webpack-plugin": "^1.1.0",
     "@types/webpack": "^4.1.4",
     "babel-loader": "^7.1.4",
     "babel-plugin-transform-class-properties": "^6.24.1",
@@ -40,6 +41,7 @@
     "ts-loader": "^4.2.0",
     "ts-node": "^6.0.2",
     "typescript": "^2.8.3",
+    "uglifyjs-webpack-plugin": "^1.2.5",
     "webpack": "^4.6.0",
     "webpack-cli": "^2.1.2",
     "webpack-dev-server": "^3.1.4"

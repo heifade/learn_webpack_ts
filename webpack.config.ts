@@ -57,7 +57,14 @@ export default function() {
         },
         {
           test: /\.tsx?$/,
+          exclude: /node_modules/,
           use: [
+            {
+              loader: "cache-loader",
+              options: {
+                cacheDirectory: path.resolve(__dirname, "build-temp", "ts")
+              }
+            },
             { loader: "babel-loader", options: babelConfig },
             { loader: "ts-loader", options: { transpileOnly: true } }
           ]
@@ -71,18 +78,24 @@ export default function() {
               loader: "css-loader",
               options: {
                 modules: true,
+                url: true,
+                useRelativePath: true,
               }
             },
-            // {
-            //   loader: "postcss-loader"
-            // },
+            {
+              loader: path.resolve('./build-tools/loaders/lessToCssLoader.js'),
+            },
             {
               loader: "less-loader",
               options: {
                 // rootpath: path.resolve(__dirname, "src")
                 // relativeUrls: true,
+                useRelativePath: "./",
+                // url: false
+                root: './',
+                modules: true,
               }
-            }
+            }, 
           ]
         },
         {
@@ -117,11 +130,11 @@ export default function() {
           }
         }
       },
-      runtimeChunk: false
+      runtimeChunk: true
     },
 
     plugins: [
-      new CleanWebpackPlugin(["dist"]),
+      new CleanWebpackPlugin(["dist", "build-temp"]),
       // new UglifyjsWebpackPlugin({
       //   parallel: true,
       //   uglifyOptions: {

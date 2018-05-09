@@ -19,6 +19,7 @@ ReactDOM.render(
 );
 
 
-console.log(trim('  5566  '));
+console.log(trim('  556677  '));
 
 console.log(process.env.ENV);
+

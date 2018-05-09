@@ -1,3 +1,5 @@
+import * as path from "path";
+
 export default function(modules: any) {
   let plugins: any = [
     require.resolve("babel-plugin-transform-es3-member-expression-literals"),
@@ -33,6 +35,7 @@ export default function(modules: any) {
         }
       ]
     ],
+    cacheDirectory: path.resolve(__dirname, "build-temp", "babel"),
     plugins
   };
-};
+}

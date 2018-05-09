@@ -20,8 +20,7 @@ export default function() {
   let config: webpack.Configuration = {
     mode: "development",
     entry: {
-      //[`${pkg.name}.min`]: "./src/index"
-      index: "./src/index"
+      [`${pkg.name}.min`]: "./src/index"
     },
     output: {
       path: path.resolve(__dirname, "dist"),
@@ -51,21 +50,6 @@ export default function() {
       noParse: [/moment.js/],
       rules: [
         {
-          test: /\.(woff|woff2|eot|ttf|otf|png|gif|jpe?g)$/,
-          exclude: /node_modules/,
-          use: [
-            {
-              loader: "url-loader",
-              options: {
-                name: "[name].[ext]",
-                outputPath: "images/",
-                // publicPath: "../",
-                limit: 128
-              }
-            }
-          ]
-        },
-        {
           test: /\.jsx?$/,
           exclude: /node_modules/,
           loader: "babel-loader",
@@ -85,10 +69,33 @@ export default function() {
             MiniCssExtractPlugin.loader,
             {
               loader: "css-loader",
-              options: { modules: true }
+              options: {
+                modules: true,
+              }
             },
-            { loader: "less-loader", options: { javascriptEnabled: true } }
+            // {
+            //   loader: "postcss-loader"
+            // },
+            {
+              loader: "less-loader",
+              options: {
+                // rootpath: path.resolve(__dirname, "src")
+                // relativeUrls: true,
+              }
+            }
           ]
+        },
+        {
+          test: /\.(woff|woff2|eot|ttf|otf|png|svg|gif|jpe?g)$/,
+          exclude: /node_modules/,
+          loader: "url-loader",
+          options: {
+            name: "[hash:8].[name].[ext]",
+            outputPath: "imgs/",
+            // useRelativePath: true,
+            // publicPath: "../",
+            limit: 9280
+          }
         }
       ]
     },
@@ -112,14 +119,15 @@ export default function() {
       },
       runtimeChunk: false
     },
+
     plugins: [
       new CleanWebpackPlugin(["dist"]),
-      new UglifyjsWebpackPlugin({
-        parallel: true,
-        uglifyOptions: {
-          ecma: 6
-        }
-      }),
+      // new UglifyjsWebpackPlugin({
+      //   parallel: true,
+      //   uglifyOptions: {
+      //     ecma: 6
+      //   }
+      // }),
       new HtmlWebpackPlugin({
         title: "learn Webpack",
         template: "./public/index.html"
@@ -140,7 +148,7 @@ export default function() {
         "process.env.ENV": JSON.stringify("Hellow")
       }),
       new MiniCssExtractPlugin({
-        filename: "[name].css",
+        filename: "[hash:8].[name].css",
         chunkFilename: "[id].css"
       })
     ],

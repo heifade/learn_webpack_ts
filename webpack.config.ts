@@ -6,6 +6,7 @@ import * as HtmlWebpackPlugin from "html-webpack-plugin";
 import chalk from "chalk";
 import * as UglifyjsWebpackPlugin from "uglifyjs-webpack-plugin";
 import * as MiniCssExtractPlugin from "mini-css-extract-plugin";
+import ConsoleLogOnBuildPlugin from "./build-tools/plugs/ConsoleLogOnBuildPlugin";
 
 export default function() {
   let modules = false;
@@ -66,6 +67,12 @@ export default function() {
               }
             },
             { loader: "babel-loader", options: babelConfig },
+            {
+              loader: path.resolve("./build-tools/loaders/print-loader.js"),
+              options: {
+                fromLoader: "ts-loader"
+              }
+            },
             { loader: "ts-loader", options: { transpileOnly: true } }
           ]
         },
@@ -81,7 +88,7 @@ export default function() {
               }
             },
             {
-              loader: path.resolve("./build-tools/loaders/lessToCssLoader.js")
+              loader: path.resolve("./build-tools/loaders/lessToCss-loader.js")
             },
             {
               loader: "less-loader",
@@ -98,6 +105,10 @@ export default function() {
             outputPath: "imgs/",
             limit: 120
           }
+        },
+        {
+          test: /\.txtt$/,
+          loader: path.resolve("./build-tools/loaders/txt-loader.js")
         }
       ]
     },
@@ -146,12 +157,15 @@ export default function() {
       // }),
       // new webpack.optimize.ModuleConcatenationPlugin(),
 
-      new webpack.DefinePlugin({
-        "process.env.ENV": JSON.stringify("Hellow")
-      }),
+      // new webpack.DefinePlugin({
+      //   "process.env.NODE_ENV": JSON.stringify("Hellow")
+      // }),
       new MiniCssExtractPlugin({
         filename: "[hash:8].[name].css",
         chunkFilename: "[id].css"
+      }),
+      new ConsoleLogOnBuildPlugin({
+        a: 1
       })
     ],
     devServer: {

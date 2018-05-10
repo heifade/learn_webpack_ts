@@ -1,6 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { trim } from "lodash";
+
+let txt = require("./aa.txtt");
 let styles = require("./index.less");
 
 
@@ -21,5 +23,7 @@ ReactDOM.render(
 
 console.log(trim('  556677  '));
 
-console.log(process.env.ENV);
+console.log(process.env.NODE_ENV);
 
+
+console.log(`txt: ${txt}`);

@@ -77,25 +77,16 @@ export default function() {
             {
               loader: "css-loader",
               options: {
-                modules: true,
-                url: true,
-                useRelativePath: true,
+                modules: true
               }
             },
             {
-              loader: path.resolve('./build-tools/loaders/lessToCssLoader.js'),
+              loader: path.resolve("./build-tools/loaders/lessToCssLoader.js")
             },
             {
               loader: "less-loader",
-              options: {
-                // rootpath: path.resolve(__dirname, "src")
-                // relativeUrls: true,
-                useRelativePath: "./",
-                // url: false
-                root: './',
-                modules: true,
-              }
-            }, 
+              options: {}
+            }
           ]
         },
         {
@@ -105,9 +96,7 @@ export default function() {
           options: {
             name: "[hash:8].[name].[ext]",
             outputPath: "imgs/",
-            // useRelativePath: true,
-            // publicPath: "../",
-            limit: 9280
+            limit: 120
           }
         }
       ]

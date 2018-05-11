@@ -7,12 +7,12 @@ export default function(modules: any) {
     require.resolve("babel-plugin-transform-object-assign"),
     require.resolve("babel-plugin-transform-class-properties"),
     require.resolve("babel-plugin-transform-object-rest-spread"),
-    [
-      require.resolve("babel-plugin-transform-runtime"),
-      {
-        polyfill: false
-      }
-    ]
+    // [
+    //   require.resolve("babel-plugin-transform-runtime"),
+    //   {
+    //     polyfill: false
+    //   }
+    // ]
   ];
 
   return {

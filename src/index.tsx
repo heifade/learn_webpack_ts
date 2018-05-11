@@ -1,13 +1,18 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { trim } from "lodash";
+import { Button } from "./components";
 
-let txt = require("./aa.txtt");
 let styles = require("./index.less");
+
+
 
 
 let div = document.createElement("div");
 document.body.appendChild(div);
+
+function click(e: any) {
+  console.log(11, e);
+}
 
 ReactDOM.render(
   <div className={styles["main-frame"]}>
@@ -15,15 +20,9 @@ ReactDOM.render(
     <div>菜单</div>
     <div>内容</div>
     <div className={styles["pic"]}>{"name"}</div>
+    <Button onClick={click}  value="确定"/>
   </div>,
 
   div
 );
 
-
-console.log(trim('  556677  '));
-
-console.log(process.env.NODE_ENV);
-
-
-console.log(`txt: ${txt}`);

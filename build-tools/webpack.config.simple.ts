@@ -1,32 +1,33 @@
 import * as webpack from "webpack";
 import * as path from "path";
 import getBabelConfig from "./babel.config";
-import * as CleanWebpackPlugin from "clean-webpack-plugin";
+// import * as CleanWebpackPlugin from "clean-webpack-plugin";
 import * as HtmlWebpackPlugin from "html-webpack-plugin";
-import chalk from "chalk";
-import * as UglifyjsWebpackPlugin from "uglifyjs-webpack-plugin";
+// import chalk from "chalk";
+// import * as UglifyjsWebpackPlugin from "uglifyjs-webpack-plugin";
 import * as MiniCssExtractPlugin from "mini-css-extract-plugin";
-import ConsoleLogOnBuildPlugin from "./build-tools/plugs/ConsoleLogOnBuildPlugin";
+import ConsoleLogOnBuildPlugin from "./plugs/ConsoleLogOnBuildPlugin";
+// import * as merge from "webpack-merge";
+import * as rimraf from "rimraf";
 
-export default function() {
+let projectRootPath = path.resolve(__dirname, "..");
+
+rimraf.sync(path.resolve(projectRootPath, "./dist1"));
+
+export default function(env: any, argv: any) {
   let modules = false;
   let pkg = require(path.join(process.cwd(), "package.json"));
 
   let babelConfig = getBabelConfig(modules || false);
 
-  console.log(
-    `NODE_ENV1=${process.env.NODE_ENV1}, NODE_ENV2=${process.env.NODE_ENV2}`
-  );
-
-  let config: webpack.Configuration = {
+  let config1: webpack.Configuration = {
     mode: "development",
     entry: {
-      [`${pkg.name}.min`]: "./src/index"
+      [`${pkg.name}.min`]: path.resolve(projectRootPath, "./src/simple/index")
     },
     output: {
-      path: path.resolve(__dirname, "dist"),
+      path: path.resolve(projectRootPath, "./dist1/simple"),
       filename: "[name].js"
-      // publicPath: path.resolve(__dirname, "dist", "assets"),
     },
     devtool: "source-map",
     resolve: {
@@ -48,7 +49,6 @@ export default function() {
     //   lodash: "lodash"
     // },
     module: {
-      noParse: [/moment.js/],
       rules: [
         {
           test: /\.jsx?$/,
@@ -58,17 +58,24 @@ export default function() {
         },
         {
           test: /\.tsx?$/,
-          exclude: /node_modules/,
+          exclude: [/node_modules/],
           use: [
             {
               loader: "cache-loader",
               options: {
-                cacheDirectory: path.resolve(__dirname, "build-temp", "ts")
+                cacheDirectory: path.resolve(
+                  projectRootPath,
+                  "./build-temp",
+                  "ts"
+                )
               }
             },
             { loader: "babel-loader", options: babelConfig },
             {
-              loader: path.resolve("./build-tools/loaders/print-loader.js"),
+              loader: path.resolve(
+                projectRootPath,
+                "./build-tools/loaders/print-loader.js"
+              ),
               options: {
                 fromLoader: "ts-loader"
               }
@@ -88,7 +95,10 @@ export default function() {
               }
             },
             {
-              loader: path.resolve("./build-tools/loaders/lessToCss-loader.js")
+              loader: path.resolve(
+                projectRootPath,
+                "./build-tools/loaders/lessToCss-loader.js"
+              )
             },
             {
               loader: "less-loader",
@@ -108,7 +118,10 @@ export default function() {
         },
         {
           test: /\.txtt$/,
-          loader: path.resolve("./build-tools/loaders/txt-loader.js")
+          loader: path.resolve(
+            projectRootPath,
+            "./build-tools/loaders/txt-loader.js"
+          )
         }
       ]
     },
@@ -134,7 +147,7 @@ export default function() {
     },
 
     plugins: [
-      new CleanWebpackPlugin(["dist", "build-temp"]),
+      // new CleanWebpackPlugin(["../dist1"]),
       // new UglifyjsWebpackPlugin({
       //   parallel: true,
       //   uglifyOptions: {
@@ -174,5 +187,6 @@ export default function() {
       publicPath: "/"
     }
   };
-  return config;
+
+  return config1;
 }

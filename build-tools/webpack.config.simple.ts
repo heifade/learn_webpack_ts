@@ -27,7 +27,9 @@ export default function(env: any, argv: any) {
     },
     output: {
       path: path.resolve(projectRootPath, "./dist1/simple"),
-      filename: "[name].js"
+      filename: "[name].[chunkhash].js",
+      hashDigestLength: 8,
+      // library: "MyLibrary"
     },
     devtool: "source-map",
     resolve: {
@@ -42,13 +44,11 @@ export default function(env: any, argv: any) {
       (last, curr) => Object.assign({}, last, { [curr]: "empty" }),
       {}
     ),
-    // externals: {
-    //   moment: "moment",
-    //   react: "react",
-    //   "react-dom": "react-dom",
-    //   lodash: "lodash"
-    // },
+    externals: {
+      // learn_npm_add: "learn_npm_add",
+    },
     module: {
+      // noParse: /learn_npm_add/,
       rules: [
         {
           test: /\.jsx?$/,
@@ -111,7 +111,7 @@ export default function(env: any, argv: any) {
           exclude: /node_modules/,
           loader: "url-loader",
           options: {
-            name: "[hash:8].[name].[ext]",
+            name: "[chunkhash].[name].[ext]",
             outputPath: "imgs/",
             limit: 120
           }
@@ -174,7 +174,7 @@ export default function(env: any, argv: any) {
       //   "process.env.NODE_ENV": JSON.stringify("Hellow")
       // }),
       new MiniCssExtractPlugin({
-        filename: "[hash:8].[name].css",
+        filename: "[chunkhash].[name].css",
         chunkFilename: "[id].css"
       }),
       new ConsoleLogOnBuildPlugin({

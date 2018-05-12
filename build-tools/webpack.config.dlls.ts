@@ -109,7 +109,7 @@ export default function(env: any, argv: any) {
           exclude: /node_modules/,
           loader: "url-loader",
           options: {
-            name: "[hash:8].[name].[ext]",
+            name: "[chunkhash:8].[name].[ext]",
             outputPath: "imgs/",
             limit: 120
           }
@@ -165,7 +165,7 @@ export default function(env: any, argv: any) {
       //   "process.env.NODE_ENV": JSON.stringify("Hellow")
       // }),
       new MiniCssExtractPlugin({
-        filename: "[hash:8].[name].css",
+        filename: "[chunkhash:8].[name].css",
         chunkFilename: "[id].css"
       }),
       new ConsoleLogOnBuildPlugin({
